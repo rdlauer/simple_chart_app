@@ -71,7 +71,6 @@ function SimpleChartBlock() {
 function getChartData({ records, xField, yField }) {
   const recordsByXValueString = new Map();
   const recordsByYValueString = new Map();
-  const xLabels = [];
   const chartDatasets = [];
   for (const record of records) {
     // populate a key-value store with x-axis data and their associated records
@@ -84,11 +83,6 @@ function getChartData({ records, xField, yField }) {
       recordsByXValueString.get(xValueString).push(record);
     }
 
-    // create a string array of x-axis labels
-    if (!xLabels.includes(xValueString)) {
-      xLabels.push(xValueString);
-    }
-
     // populate a key-value store with y-axis data and their associated records
     const yValue = record.getCellValue(yField);
     const yValueString = yValue === null ? null : record.getCellValueAsString(yField);
@@ -99,6 +93,8 @@ function getChartData({ records, xField, yField }) {
       recordsByYValueString.get(yValueString).push(record);
     }
   }
+
+  const xLabels = [...recordsByXValueString.keys()];
 
   const bgColors = ['#2d7ff9', '#18bfff', '#ff08c2', '#f82b60', '#ff6f2c', '#fcb400', '#20c933', '#8b46ff', '#666666'];
   let bgColorIndex = 0;
